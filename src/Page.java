@@ -7,7 +7,6 @@ public class Page {
     private int indexRealPage;
 
     public Page(boolean availability){
-
         this.availability = availability;
     }
 

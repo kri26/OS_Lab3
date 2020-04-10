@@ -28,20 +28,19 @@ public class Operation {
                page.setIndexRealPage(indexOfPageFrames);
                loaning.add(pageIndex);
            }else if(tableRealMemory.size() == capacityRealMemory){
-               LRU(page);
+        	   leastRecentlyUsed(page, pageIndex);
            }
        }
        printPageFrames();
        printPages();
    }
    
-   private void LRU(Page page) {
+   private void leastRecentlyUsed(Page page, int pageIndex) {
 	   	int index = 0;
 	   	loop:
 	   	for (int i = 0; i < loaning.size(); i++) {
 				int temp = loaning.get(i);
 				for (int j = 0; j < tableVirtualMemory.size(); j++) {
-					// 
 					if((tableVirtualMemory.get(j).isAvailability()) && (j == temp)) {
 						Page result = tableVirtualMemory.get(j);
 						index = result.getIndexRealPage();
@@ -66,8 +65,8 @@ public class Operation {
        int i = 0;
        System.out.println("");
        System.out.println("Физическая память");
-       for (Page current_page: tableRealMemory) {
-           System.out.println("i = " + i + "; Приверка присутсвия = " + current_page.isAvailability());
+       for (Page currentPage: tableRealMemory) {
+           System.out.println("i = " + i + "; Приверка присутсвия = " + currentPage.isAvailability());
            i++;
        }
        System.out.println();

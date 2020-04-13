@@ -1,17 +1,25 @@
 import java.util.ArrayList;
 
 public class Operation {
+	//таблица страниц виртуальной памяти
     private TablePages tableVirtualMemory;
+    //таблица страничных блоков физической памяти
     private ArrayList<Page> tableRealMemory;
+    // вместимость физической памяти
     private int maxFrames;
     private ArrayList<Integer> loaning = new ArrayList<>();    
 
     public Operation (int sizeOfRAM, int sizeOfPage){
+    	// страницы виртуальной памяти
         tableVirtualMemory = new TablePages();
+        //таблица страничных блоков физической памяти
         tableRealMemory = new ArrayList<Page>();
+        // вместимость физической памяти
         maxFrames = sizeOfRAM / sizeOfPage;
+        // таблица виртуальный страниц в 2 раза больше физической памяти
         for(int i = 0; i < (sizeOfRAM * 2) / sizeOfPage; i++){
-            Page page = new Page(false);
+        	// память пуста
+        	Page page = new Page(false);
             page.setIndexRealPage(-43424);
             tableVirtualMemory.add(page);
         }
@@ -21,15 +29,22 @@ public class Operation {
 	public void insertIntoPhysicalMemory(int pageIndex){
     	Object[] resultObjects;
     	LeastRecentlyUsed algorithm = new LeastRecentlyUsed(tableVirtualMemory, tableRealMemory, loaning);
-        Page page = tableVirtualMemory.get(pageIndex);
+    	//произошло обращение к виртуальному адресному пространству страницы с номером pageIndex
+    	Page page = tableVirtualMemory.get(pageIndex);
         if(!page.isAvailability()){
-            if(tableRealMemory.size() < maxFrames){
-                page.setAvailability(true);
-                tableRealMemory.add(page);
-                int indexOfPageFrames = tableRealMemory.indexOf(page);
+        	// если есть место в физической памяти
+        	if(tableRealMemory.size() < maxFrames){
+        		// помечаем, что присутствует в физической памяти
+        		page.setAvailability(true);
+        		// добавляем страницу в конец физической памяти
+        		tableRealMemory.add(page);
+        		// запоминаем индекс в физической памяти
+        		int indexOfPageFrames = tableRealMemory.indexOf(page);
                 page.setIndexRealPage(indexOfPageFrames);
+                // при добавлении запомнили индекс виртуального адреса, куда добавили
                 loaning.add(pageIndex);
-            } else if(tableRealMemory.size() == maxFrames){
+            // если закончилось место в физической памяти
+        	} else if(tableRealMemory.size() == maxFrames){
                 resultObjects = algorithm.leastRecentlyUsed(page);
                 loaning.add(pageIndex);
                 tableRealMemory = (ArrayList<Page>)resultObjects[0];

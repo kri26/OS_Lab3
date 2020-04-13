@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 
 public class LeastRecentlyUsed {
-	
+	//таблица страниц виртуальной памяти
 	private TablePages tableVirtualMemory;
+	//таблица страничных блоков физической памяти
 	private ArrayList<Page> tableRealMemory;
 	ArrayList<Integer> loaning = new ArrayList<>();
 	
@@ -21,8 +22,10 @@ public class LeastRecentlyUsed {
 	    		lastUsedDurations[i] = -1;
 	    	}
 		   	point:
+		   	// проходим по всем недавно загруженным страницам
 		   	for (int i = 0; i < loaning.size(); i++) {
 					int temp = loaning.get(i);
+					// проходим по всем страницам виртуальной памяти
 					for (int j = 0; j < tableVirtualMemory.size(); j++) {
 						if((tableVirtualMemory.get(j).isAvailability()) && (j == temp)
 								&& (lastUsedDurations[tableVirtualMemory.get(j).getIndexRealPage()] == -1)) {
@@ -30,6 +33,7 @@ public class LeastRecentlyUsed {
 							if (AreAllDurationsFound(lastUsedDurations)) {
 								index = GetIndexOfMinElement(lastUsedDurations);
 								System.out.println("Введен " + tableVirtualMemory.get(j).getIndexRealPage());
+								// выход из вложенного цикла
 								break point;
 							}
 						}

@@ -11,7 +11,7 @@ public class LeastRecentlyUsed {
 			ArrayList<Integer> loaning) {
 		this.tableVirtualMemory = tableVirtualMemory;
 		this.tableRealMemory = tableRealMemory;
-		this.loaning = loaning;	
+		this.loaning = loaning;
 	}
 	
 	 public Object[] leastRecentlyUsed(Page page) {
@@ -27,7 +27,7 @@ public class LeastRecentlyUsed {
 					int temp = loaning.get(i);
 					// проходим по всем страницам виртуальной памяти
 					for (int j = 0; j < tableVirtualMemory.size(); j++) {
-						if((tableVirtualMemory.get(j).isAvailability()) && (j == temp)
+						if((tableVirtualMemory.get(j).isAvailability()) && (page.isR())
 								&& (lastUsedDurations[tableVirtualMemory.get(j).getIndexRealPage()] == -1)) {
 							lastUsedDurations[tableVirtualMemory.get(j).getIndexRealPage()] = i;
 							if (AreAllDurationsFound(lastUsedDurations)) {
@@ -48,6 +48,7 @@ public class LeastRecentlyUsed {
 	        result[0] = tableRealMemory;
 	        result[1] = tableVirtualMemory.getPagesRecords();
 	        result[2] = loaning;
+		   	page.setR(true);
 	        return result;
 	   }
 
